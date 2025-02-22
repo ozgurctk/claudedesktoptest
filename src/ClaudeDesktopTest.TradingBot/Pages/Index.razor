@@ -1,0 +1,83 @@
+@page "/"
+
+<MudContainer Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">Trading Dashboard</MudText>
+
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="d-flex flex-column pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle1">Total Balance</MudText>
+                <MudText Typo="Typo.h5">$10,000.00</MudText>
+                <MudText Typo="Typo.caption" Color="Color.Success">+2.5% today</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="d-flex flex-column pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle1">Open Positions</MudText>
+                <MudText Typo="Typo.h5">5</MudText>
+                <MudText Typo="Typo.caption">Active trades</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="d-flex flex-column pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle1">Today's P/L</MudText>
+                <MudText Typo="Typo.h5" Color="Color.Success">+$250.00</MudText>
+                <MudText Typo="Typo.caption">8 trades</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="d-flex flex-column pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle1">Win Rate</MudText>
+                <MudText Typo="Typo.h5">65%</MudText>
+                <MudText Typo="Typo.caption">Last 30 days</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudPaper Class="pa-4 mt-4" Elevation="2">
+                <MudText Typo="Typo.h6" Class="mb-4">Recent Trades</MudText>
+                <MudTable Items="@_recentTrades" Hover="true" Breakpoint="Breakpoint.Sm">
+                    <HeaderContent>
+                        <MudTh>Symbol</MudTh>
+                        <MudTh>Type</MudTh>
+                        <MudTh>Entry</MudTh>
+                        <MudTh>Exit</MudTh>
+                        <MudTh>P/L</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>@context.Symbol</MudTd>
+                        <MudTd>@context.Type</MudTd>
+                        <MudTd>@context.Entry.ToString("C2")</MudTd>
+                        <MudTd>@context.Exit.ToString("C2")</MudTd>
+                        <MudTd>
+                            <MudText Color="@(context.ProfitLoss >= 0 ? Color.Success : Color.Error)">
+                                @context.ProfitLoss.ToString("C2")
+                            </MudText>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private List<Trade> _recentTrades = new()
+    {
+        new Trade { Symbol = "BTC/USD", Type = "Long", Entry = 45000, Exit = 46000, ProfitLoss = 1000 },
+        new Trade { Symbol = "ETH/USD", Type = "Short", Entry = 3000, Exit = 2900, ProfitLoss = 100 },
+        new Trade { Symbol = "SOL/USD", Type = "Long", Entry = 100, Exit = 98, ProfitLoss = -200 },
+    };
+
+    private class Trade
+    {
+        public string Symbol { get; set; }
+        public string Type { get; set; }
+        public decimal Entry { get; set; }
+        public decimal Exit { get; set; }
+        public decimal ProfitLoss { get; set; }
+    }
+}
